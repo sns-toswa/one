@@ -4,7 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Robocode Marketplace</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* СТИЛІ (CSS) */
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
+        header { background-color: #eee; padding: 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        
+        .products-grid {
+            display: grid;
+            gap: 20px;
+            padding: 20px;
+            grid-template-columns: 1fr; /* Мобільна версія */
+        }
+
+        /* Планшет і ПК - 3 колонки */
+        @media (min-width: 768px) {
+            .products-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        .card { background: #555; color: white; border-radius: 10px; padding: 15px; display: flex; flex-direction: column; justify-content: space-between; }
+        .card img { width: 100%; height: 150px; object-fit: contain; background: white; border-radius: 5px; margin-bottom: 10px; }
+        .card h3 { margin: 0 0 10px 0; }
+        .price { font-weight: bold; margin-bottom: 5px; }
+        .seller-link { color: #ccc; font-size: 0.9em; text-decoration: underline; margin-bottom: 10px; display: block; }
+        .buy-btn { background-color: #ddd; border: none; padding: 10px; width: 100%; cursor: pointer; font-weight: bold; border-radius: 5px; }
+        .buy-btn:hover { background-color: #ccc; }
+    </style>
 </head>
 <body>
 
@@ -17,6 +41,66 @@
         <div id="products-grid" class="products-grid"></div>
     </main>
 
-    <script src="script.js"></script>
+    <script>
+        // СКРИПТ (JS)
+        
+        // 1. Знаходимо контейнер
+        const grid = document.getElementById('products-grid');
+
+        // 2. Дані (жорстко прописані, щоб точно працювало)
+        const products = [
+            {
+                "id": 1, 
+                "title": "Arduino UNO", 
+                "image": "https://content.arduino.cc/assets/A000066_00front_unboxed.jpg", 
+                "price": 180, 
+                "description": "Microcontroller", 
+                "sellerId": 1
+            },
+            {
+                "id": 2, 
+                "title": "LED Display", 
+                "image": "https://content.arduino.cc/assets/A000096_00.jpg", 
+                "price": 92, 
+                "description": "Display 2x16", 
+                "sellerId": 2
+            },
+            {
+                "id": 3, 
+                "title": "ESP8266", 
+                "image": "https://i.ebayimg.com/images/g/J~gAAOSw~jpb2~tV/s-l1200.jpg", 
+                "price": 300, 
+                "description": "WiFi Module", 
+                "sellerId": 1
+            }
+        ];
+
+        // 3. Функція малювання
+        function renderProducts() {
+            if (!grid) {
+                console.error("ПОМИЛКА: Не знайдено елемент з id='products-grid'");
+                return;
+            }
+            
+            grid.innerHTML = '';
+
+            products.forEach(product => {
+                const card = document.createElement('div');
+                card.classList.add('card');
+                card.innerHTML = `
+                    <h3>${product.title}</h3>
+                    <img src="${product.image}" alt="${product.title}">
+                    <div class="price">Price: ${product.price}$</div>
+                    <p>${product.description}</p>
+                    <a href="userProfile.html?id=${product.sellerId}" class="seller-link">Seller profile</a>
+                    <button class="buy-btn">Buy</button>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Запуск
+        renderProducts();
+    </script>
 </body>
 </html>
